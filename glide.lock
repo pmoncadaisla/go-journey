@@ -1,8 +1,14 @@
-hash: 3543b1e4984c4caf79f6cd88d5a40b97eaac8b6fc53e0b136b3694bffa9fac66
-updated: 2018-03-23T23:16:46.364931+01:00
+hash: 20768794e4b5798e279a25208510e01ca51a0d5611a22a16bb5f95ec3b35396f
+updated: 2018-03-24T21:48:33.499159+01:00
 imports:
 - name: github.com/asaskevich/EventBus
   version: 68a521d7cbbb7a859c2608b06342f384b3bd5f5a
+- name: github.com/juju/errors
+  version: c7d06af17c68cd34c835053720b21f6549d9b0ee
+- name: github.com/stretchr/testify
+  version: 12b6f73e6084dad08a7c6e575284b177ecafbc71
 - name: github.com/thehivecorporation/log
   version: 35d08c98086ac888de6468ae2cd40cf414bfdde7
+  subpackages:
+  - writers/json
 testImports: []

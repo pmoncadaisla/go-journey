@@ -3,3 +3,5 @@ import:
 - package: github.com/asaskevich/EventBus
 - package: github.com/thehivecorporation/log
   version: ^0.1.5
+- package: github.com/stretchr/testify
+  version: ^1.2.1
