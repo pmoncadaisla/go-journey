@@ -6,12 +6,12 @@ import (
 
 // A Journey represents a journey with id and duration time
 type Journey struct {
-	ID   int64         `json:"journey_id"`
+	ID   int           `json:"journey_id"`
 	Time time.Duration `json:"journey_time"`
 }
 
 // GetJourneyID returns Journeys ID
-func (j *Journey) GetJourneyID() int64 {
+func (j *Journey) GetJourneyID() int {
 	return j.ID
 }
 
