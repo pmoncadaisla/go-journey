@@ -21,6 +21,7 @@ type Interface interface {
 	Push(j domain.Journey)
 	Pop() domain.Journey
 	Len() int
+	Get() domain.Journey
 }
 
 // New create a Service.
@@ -36,6 +37,12 @@ func Instance() *Service {
 
 func (s *Service) Len() int {
 	return s.queue.Len()
+}
+
+func (s *Service) Get() domain.Journey {
+	item := s.Pop()
+	s.Push(item)
+	return item
 }
 
 func (s *Service) Push(j domain.Journey) {
