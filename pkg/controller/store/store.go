@@ -37,21 +37,21 @@ func Instance(config StoreConfig) *Controller {
 }
 
 func (c *Controller) Start() {
-	go c.Run()
+	go c.run()
 }
 
-func (c *Controller) Run() {
+func (c *Controller) run() {
 	for {
 		select {
 		case journey := <-c.finished:
 			c.queue.Push(journey)
-			c.OnJourneyFinished(&journey)
+			c.onJourneyFinished(&journey)
 
 		}
 	}
 }
 
-func (c *Controller) OnJourneyFinished(j *domain.Journey) {
+func (c *Controller) onJourneyFinished(j *domain.Journey) {
 	c.checkAndStoreJourney()
 }
 
