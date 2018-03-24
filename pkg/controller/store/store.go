@@ -21,9 +21,6 @@ type StoreConfig struct {
 	Channel     chan domain.Journey
 }
 
-type Interface interface {
-}
-
 var once sync.Once
 var c *Controller
 
@@ -35,9 +32,12 @@ func Instance(config StoreConfig) *Controller {
 		c.finished = config.Channel
 		c.config = config
 		c.queue = queueservice.Instance()
-		go c.Run()
 	})
 	return c
+}
+
+func (c *Controller) Start() {
+	go c.Run()
 }
 
 func (c *Controller) Run() {
