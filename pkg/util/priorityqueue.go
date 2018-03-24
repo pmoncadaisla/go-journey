@@ -46,15 +46,6 @@ func (pq *PriorityQueue) Pop() interface{} {
 	return item
 }
 
-// Get item with highest priority without poping it
-func (pq *PriorityQueue) Get() interface{} {
-	old := *pq
-	n := len(old)
-	item := old[n-1]
-	item.Index = -1 // for safety
-	return item
-}
-
 // update modifies the priority and value of an Item in the queue.
 func (pq *PriorityQueue) update(item *Item, value string, priority int) {
 	item.Value = value
