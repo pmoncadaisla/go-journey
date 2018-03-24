@@ -1,6 +1,8 @@
-hash: 13f2a1ff2fb281bd65f61dc7c0e2a71e36ce8350e8b326c34ae7e58f20fac89f
-updated: 2018-03-23T21:34:23.330939+01:00
+hash: 3543b1e4984c4caf79f6cd88d5a40b97eaac8b6fc53e0b136b3694bffa9fac66
+updated: 2018-03-23T23:16:46.364931+01:00
 imports:
 - name: github.com/asaskevich/EventBus
   version: 68a521d7cbbb7a859c2608b06342f384b3bd5f5a
+- name: github.com/thehivecorporation/log
+  version: 35d08c98086ac888de6468ae2cd40cf414bfdde7
 testImports: []

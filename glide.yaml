@@ -1,3 +1,5 @@
 package: github.com/pmoncadaisla/go-journey
 import:
 - package: github.com/asaskevich/EventBus
+- package: github.com/thehivecorporation/log
+  version: ^0.1.5
