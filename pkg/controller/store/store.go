@@ -69,6 +69,7 @@ func (c *Controller) store(journey domain.Journey) {
 	if c.config.OnlyHighest && c.queue.Len() > 0 && c.queue.Get().ID == (journey.ID+1) {
 		journey := c.queue.Pop()
 		c.store(journey)
+		journey.SetStoreTimeNow()
 	} else {
 		log.WithField("ID: ", journey.ID).WithField("Duration: ", journey.Time).Info("Process Stored")
 		c.storedjourneyService.SetLast(&journey)

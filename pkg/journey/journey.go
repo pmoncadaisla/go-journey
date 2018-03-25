@@ -24,6 +24,7 @@ func New(id int, time time.Duration, finished chan domain.Journey) {
 }
 
 func (j *Journey) Start() {
+	j.SetStartTimeNow()
 	log.WithField("id", j.GetJourneyID()).WithField("time", j.GetJourneyTime()).Info("started")
 	go j.Run()
 }
@@ -34,6 +35,7 @@ func (j *Journey) Run() {
 }
 
 func (j *Journey) Finish() {
+	j.SetFinishTimeNow()
 	log.WithField("id", j.GetJourneyID()).WithField("time", j.GetJourneyTime()).Info("finished")
 	go func() {
 		j.finished <- j.Journey
