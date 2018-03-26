@@ -52,30 +52,8 @@ func (c *Controller) run() {
 		case journey := <-c.finished:
 			finishTimeoutTimer.Reset(c.config.FinishTimeout)
 			c.onJourneyFinished(journey)
-		case <-finishTimeoutTimer.C:
-			c.skipJourney()
-
 		}
 	}
-}
-
-func (c *Controller) skipJourney() {
-	// Check if there are elements in the queue or not
-	if c.queue.Len() == 0 {
-		return
-	}
-	nextID := c.storedjourneyService.GetNextID()
-
-	// If an element that finishes that was already skiped, it remains in the queue.
-	// check if we are skiping a journey that hasn't arrived yet
-	if nextID > c.storedjourneyService.GetReceivedHighestID() {
-		return
-	}
-
-	c.storedjourneyService.SetLast(&domain.Journey{ID: nextID})
-	c.metricsService.CounterInc("journeys_skipped")
-	log.WithField("ID", nextID).WithField("reason", "timeout").Info("skipped")
-	c.checkAndStoreJourney()
 }
 
 func (c *Controller) onJourneyFinished(j domain.Journey) {

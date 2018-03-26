@@ -26,7 +26,6 @@ func Receive(id int, time time.Duration, finished chan domain.Journey) {
 	j.finished = finished
 	j.metricsService = metricsservice.Instance()
 	j.storedjourneyService = storedjourneyservice.Instance()
-	j.storedjourneyService.Receive(&j.Journey)
 	j.Start()
 }
 
