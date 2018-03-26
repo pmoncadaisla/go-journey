@@ -18,9 +18,11 @@ dockerbuild: operator
 	@docker build -t ${DOCKER_IMAGE} -f Dockerfile .
 
 build: test
+	mkdir -p build
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -i -v -o ${OUT_BIN} -ldflags="-s -w -X main.Version=${VERSION}" ${PKG}
 
 build-darwin: test
+	mkdir -p build
 	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -a -i -v -o ${OUT_BIN}.darwin -ldflags="-s -w -X main.Version=${VERSION}" ${PKG}
 
 
