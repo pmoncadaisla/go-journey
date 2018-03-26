@@ -27,6 +27,10 @@ const (
 	JOURNEYS_LAST_STORED_ID
 	// JOURNEYS_RECEIVED ...
 	JOURNEYS_RECEIVED
+	// HTTP_200_COUNT ...
+	HTTP_200_COUNT
+	// HTTP_400_COUNT ...
+	HTTP_400_COUNT
 )
 
 var metric = [...]string{
@@ -40,6 +44,8 @@ var metric = [...]string{
 	"journeys_highest_received_id",
 	"journeys_last_stored_id",
 	"journeys_received",
+	"http_200_count",
+	"http_400_copunt",
 }
 
 func (n Metric) String() string {

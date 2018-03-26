@@ -26,6 +26,7 @@ func webserver() {
 		var j domain.Journey
 		if err := c.BindJSON(&j); err == nil {
 			if metricsService.GetCounterValue(metrics.JOURNEYS_RECEIVED.String())+1 != j.ID {
+				metricsService.CounterInc(metrics.HTTP_400_COUNT.String())
 				c.JSON(400, gin.H{
 					"status":              "bad_request",
 					"highest_received_id": metricsService.GetCounterValue(metrics.JOURNEYS_RECEIVED.String()),
@@ -47,6 +48,7 @@ func webserver() {
 	})
 
 	r.GET("/journey/next", func(c *gin.Context) {
+		metricsService.CounterInc(metrics.HTTP_200_COUNT.String())
 		c.JSON(200, gin.H{
 			"id": metricsService.GetCounterValue(metrics.JOURNEYS_RECEIVED.String()) + 1,
 		})
