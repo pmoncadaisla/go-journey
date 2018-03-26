@@ -16,6 +16,7 @@ import (
 	metricsservice "github.com/pmoncadaisla/go-journey/pkg/service/metrics"
 	queueservice "github.com/pmoncadaisla/go-journey/pkg/service/queue"
 	storedjourneyservice "github.com/pmoncadaisla/go-journey/pkg/service/store"
+	"github.com/pmoncadaisla/go-journey/pkg/storage"
 )
 
 var finished chan domain.Journey
@@ -23,6 +24,7 @@ var allStored chan bool
 var storedJourneyService storedjourneyservice.Interface
 var queueService queueservice.Interface
 var metricsService metricsservice.Interface
+var storageDriver storage.Interface
 
 func main() {
 
@@ -42,10 +44,14 @@ func main() {
 	// Configure Store Controller
 	// if OnlyHighest is set to TRUE, then it only stores the journeys
 	// with the highest cardinality as proposed
+
+	storageDriver = storage.NewStdoutStorage()
 	storeController := storecontroler.Instance(storecontroler.StoreConfig{
 		Channel:          finished,
 		OnlyHighest:      true,
 		AllStoredChannel: allStored,
+		// We are using the STDout storage driver
+		StorageDriver: storageDriver,
 	})
 	storeController.Start()
 

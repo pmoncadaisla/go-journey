@@ -35,6 +35,7 @@ func webserver() {
 				})
 			} else {
 				journey.Receive(j.ID, j.Time*time.Millisecond, finished)
+				metricsService.CounterInc(metrics.HTTP_400_COUNT.String())
 				c.JSON(200, gin.H{
 					"status":       "received",
 					"journey_id":   j.ID,
