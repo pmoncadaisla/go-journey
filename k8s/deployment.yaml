@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: journey
+  labels:
+    app: journey
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: journey
+  template:
+    metadata:
+      labels:
+        app: journey
+    spec:
+      containers:
+      - name: journey
+        # Non existent image
+        image: go-journey/journey:1.0.0
+        ports:
+        - containerPort: 8080

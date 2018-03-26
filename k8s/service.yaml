@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: journey
+spec:
+  selector:
+    app: journey
+  ports:
+  - protocol: TCP
+    name: http
+    port: 80
+    targetPort: 8080
