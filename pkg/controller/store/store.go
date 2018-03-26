@@ -2,7 +2,6 @@ package controller
 
 import (
 	"sync"
-	"time"
 
 	"github.com/pmoncadaisla/go-journey/pkg/domain"
 	metricsservice "github.com/pmoncadaisla/go-journey/pkg/service/metrics"
@@ -20,9 +19,8 @@ type Controller struct {
 }
 
 type StoreConfig struct {
-	OnlyHighest   bool
-	Channel       chan domain.Journey
-	FinishTimeout time.Duration
+	OnlyHighest bool
+	Channel     chan domain.Journey
 }
 
 var once sync.Once
@@ -46,11 +44,9 @@ func (c *Controller) Start() {
 }
 
 func (c *Controller) run() {
-	finishTimeoutTimer := time.NewTimer(c.config.FinishTimeout)
 	for {
 		select {
 		case journey := <-c.finished:
-			finishTimeoutTimer.Reset(c.config.FinishTimeout)
 			c.onJourneyFinished(journey)
 		}
 	}

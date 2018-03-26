@@ -25,9 +25,8 @@ func main() {
 	finished := make(chan domain.Journey)
 
 	storeController := storecontroler.Instance(storecontroler.StoreConfig{
-		Channel:       finished,
-		OnlyHighest:   false,
-		FinishTimeout: 1 * time.Second,
+		Channel:     finished,
+		OnlyHighest: false,
 	})
 	storeController.Start()
 
