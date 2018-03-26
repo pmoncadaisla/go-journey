@@ -93,6 +93,7 @@ Implementation would be quite easy, as we just need to create an other Queue Ser
 And receives signals through the  `finished` everytime a journey finishes and  emits a signal thorugh `AllStoredChannel` everytime the queue of journeys to store is empty (no more pending journeys)
 
 Available configuration:
+
 |Parameter|Description  |  
 |--|--|
 | OnlyHighest | (bool) Only stores the journey with highest cardinality |
