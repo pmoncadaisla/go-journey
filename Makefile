@@ -14,7 +14,7 @@ GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/)
 
 all: build
 
-dockerbuild: operator
+dockerbuild: build
 	@docker build -t ${DOCKER_IMAGE} -f Dockerfile .
 
 build: test
@@ -32,13 +32,6 @@ test:
 vet:
 	@go vet ${PKG_LIST}
 
-lint:
-	@for file in ${GO_FILES} ;  do \
-		golint $$file ; \
-	done
-
-draft: build
-	draft up
 
 clean:
 	-@rm ${OUT_BIN}
