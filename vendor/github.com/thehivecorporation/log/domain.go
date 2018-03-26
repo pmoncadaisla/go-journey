@@ -39,13 +39,12 @@ var LevelNames = [...]string{
 	LevelFatal: "fatal",
 }
 
-var levelStrings = map[string]Level{
-	"debug":   LevelDebug,
-	"info":    LevelInfo,
-	"warn":    LevelWarn,
-	"warning": LevelWarn,
-	"error":   LevelError,
-	"fatal":   LevelFatal,
+var LevelStrings = map[string]Level{
+	"debug": LevelDebug,
+	"info":  LevelInfo,
+	"warn":  LevelWarn,
+	"error": LevelError,
+	"fatal": LevelFatal,
 }
 
 type Tags map[string]string
@@ -77,12 +76,13 @@ type Logger interface {
 }
 
 type Payload struct {
-	Level     Level         `json:"level,omitempty"`
-	Messages  []interface{} `json:"messages,omitempty"`
-	Fields    Fields        `json:"fields,omitempty"`
-	Timestamp *time.Time    `json:"ts,omitempty"`
-	Tags      Tags          `json:"tags,omitempty"`
-	Errors    []string      `json:"Errors,omitempty"`
+	Level             Level         `json:"level,omitempty"`
+	Messages          []interface{} `json:"messages,omitempty"`
+	Fields            Fields        `json:"fields,omitempty"`
+	Timestamp         time.Time     `json:"ts,omitempty"`
+	Tags              Tags          `json:"tags,omitempty"`
+	Errors            []string      `json:"Errors,omitempty"`
+	ElapsedSinceStart time.Duration `json:"ElapsedSinceStart,omitempty"`
 }
 
 type Writer interface {
@@ -96,6 +96,7 @@ type Telemetry interface {
 	Inc(name string, value float64, extra ...interface{}) Logger
 	Gauge(string, float64, ...interface{}) Logger
 	Histogram(name string, value float64, extra ...interface{}) Logger
+	Summary(name string, value float64, extra ...interface{}) Logger
 
 	Clone() Telemetry
 	SetLogger(l Logger)

@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/pmoncadaisla/go-journey/pkg/domain"
+	"github.com/pmoncadaisla/go-journey/pkg/metrics"
 	metricsservice "github.com/pmoncadaisla/go-journey/pkg/service/metrics"
 	queueservice "github.com/pmoncadaisla/go-journey/pkg/service/queue"
 	storedjourneyservice "github.com/pmoncadaisla/go-journey/pkg/service/store"
@@ -19,8 +20,9 @@ type Controller struct {
 }
 
 type StoreConfig struct {
-	OnlyHighest bool
-	Channel     chan domain.Journey
+	OnlyHighest      bool
+	Channel          chan domain.Journey
+	AllStoredChannel chan bool
 }
 
 var once sync.Once
@@ -54,17 +56,16 @@ func (c *Controller) run() {
 
 func (c *Controller) onJourneyFinished(j domain.Journey) {
 	c.queue.Push(j)
-	c.metricsService.GaugeInc("journeys_finished")
-	c.checkAndStoreJourney()
+	c.metricsService.GaugeInc(metrics.JOURNEYS_FINISHED.String())
+	c.checkAndStoreJourney(&j)
 }
 
-func (c *Controller) checkAndStoreJourney() {
+func (c *Controller) checkAndStoreJourney(j *domain.Journey) {
 	if c.queue.Len() > 0 && c.storedjourneyService.GetNextID() == c.queue.Get().ID {
-		//log.WithField("ID", c.queue.Get().ID).Info("c.queue.Get().ID")
 		journey := c.queue.Pop()
 		c.store(journey)
-		c.metricsService.GaugeDec("journeys_finished")
-		c.checkAndStoreJourney()
+		c.metricsService.GaugeDec(metrics.JOURNEYS_FINISHED.String())
+		c.checkAndStoreJourney(j)
 	}
 }
 
@@ -74,8 +75,15 @@ func (c *Controller) store(journey domain.Journey) {
 		c.store(journey)
 		journey.SetStoreTimeNow()
 	} else {
-		log.WithField("ID: ", journey.ID).WithField("Duration: ", journey.Time).Info("Process Stored")
-		c.metricsService.CounterInc("journeys_stored")
+		log.WithField("ID: ", journey.ID).WithField("Duration: ", journey.Time).Info("stored")
+		c.metricsService.CounterInc(metrics.JOURNEYS_STORED.String())
+		c.metricsService.GaugeDec(metrics.JOURNEYS_PENDING.String())
+		c.metricsService.GaugeSet(metrics.JOURNEYS_LAST_STORED_ID.String(), journey.ID)
 		c.storedjourneyService.SetLast(&journey)
+		if c.queue.Len() == 0 {
+			go func() {
+				c.config.AllStoredChannel <- true
+			}()
+		}
 	}
 }
